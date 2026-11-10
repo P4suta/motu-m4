@@ -75,6 +75,9 @@ version = "1.99.1"
 backend = "core:rust"
 specifiers = ["1.99.1"]
 
+[tools.rust.options]
+components = "clippy,rustfmt"
+
 [[tools.zizmor]]
 version = "1.32.0"
 backend = "aqua:zizmorcore/zizmor"
