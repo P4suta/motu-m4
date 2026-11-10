@@ -1,0 +1,20 @@
+[package]
+name = "motu-m4-audio"
+version.workspace = true
+edition.workspace = true
+rust-version = "1.88"
+license.workspace = true
+publish = false
+
+[dependencies]
+motu-m4-core = { path = "../motu-m4-core" }
+hound = "=3.5.1"
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.154"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+alsa = "=0.12.1"
+libc = "=0.2.191"
+
+[lints]
+workspace = true

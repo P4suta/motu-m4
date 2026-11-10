@@ -1,0 +1,20 @@
+[
+  {"id": 42, "type": "PipeWire:Interface:Device", "info": {
+    "props": {"api.alsa.card": "1", "device.api": "alsa", "device.vendor.id": "0x07fd", "device.product.id": "0x000b"},
+    "params": {"EnumProfile": [{"index": 0, "name": "off"}, {"index": 17, "name": "pro-audio", "available": "yes"}]}
+  }},
+  {"id": 61, "type": "PipeWire:Interface:Node", "info": {"props": {
+    "device.id": 42, "media.class": "Audio/Sink", "node.name": "alsa_output.M4.pro-output-0", "audio.channels": 4,
+    "audio.position": "[ AUX0 AUX1 AUX2 AUX3 ]"
+  }}},
+  {"id": 62, "type": "PipeWire:Interface:Node", "info": {"props": {
+    "device.id": "42", "media.class": "Audio/Source", "node.name": "alsa_input.M4.pro-input-0", "audio.channels": "4",
+    "audio.position": ["AUX0", "AUX1", "AUX2", "AUX3"]
+  }}},
+  {"id": 71, "type": "PipeWire:Interface:Node", "info": {"props": {
+    "media.class": "Audio/Sink", "node.name": "motu_m4.M4.main", "audio.channels": 2
+  }}},
+  {"id": 72, "type": "PipeWire:Interface:Node", "info": {"props": {
+    "media.class": "Audio/Source", "node.name": "motu_m4.M4.input_1", "audio.channels": 1
+  }}}
+]

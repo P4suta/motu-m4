@@ -1,0 +1,10 @@
+/target/
+/mutants.out/
+/mutants.out.old/
+/.firmware-corpus/
+/.native-sdk/
+/.mise.local.toml
+*.wav
+*.raw
+*.pcm
+*.image

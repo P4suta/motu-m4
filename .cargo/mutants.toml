@@ -1,0 +1,4 @@
+exclude_globs = [
+  "crates/motu-m4-core/src/proofs.rs",
+  "crates/motu-m4-firmware/src/proofs.rs",
+]

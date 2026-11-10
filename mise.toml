@@ -1,0 +1,13 @@
+[tools]
+rust = "1.99.1"
+just = "1.59.0"
+actionlint = "1.7.12"
+zizmor = "1.31.1"
+gitleaks = "8.30.1"
+
+[tools."http:cargo-audit"]
+version = "0.22.2"
+
+[tools."http:cargo-audit".platforms]
+linux-x64 = { url = "https://github.com/rustsec/rustsec/releases/download/cargo-audit/v0.22.2/cargo-audit-x86_64-unknown-linux-musl-v0.22.2.tgz", checksum = "sha256:7fb9497f8594b389e5fce5ef9b92db08432996895b2e0c5a0167a69ed445c428" }
+linux-arm64 = { url = "https://github.com/rustsec/rustsec/releases/download/cargo-audit/v0.22.2/cargo-audit-aarch64-unknown-linux-gnu-v0.22.2.tgz", checksum = "sha256:c6603814ddaa45e51263dafd31c0ac98808f688d26f7395804f9670b0fd599dd" }

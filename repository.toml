@@ -1,0 +1,8 @@
+name = "motu-m4"
+summary = "Linux recording, playback, and desktop channel routing for the M4"
+install = "mise x -- cargo build --locked --release --package motu-m4"
+usage = """
+./target/release/motu-m4 audio devices"""
+documentation_index = true
+copyright = "Yasunobu"
+license = "MIT OR Apache-2.0"

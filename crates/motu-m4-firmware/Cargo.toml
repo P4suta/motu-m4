@@ -1,0 +1,15 @@
+[package]
+name = "motu-m4-firmware"
+version.workspace = true
+edition.workspace = true
+rust-version = "1.88"
+license.workspace = true
+publish = false
+
+[dependencies]
+armagnac = "=0.3.0"
+motu-m4-core = { path = "../motu-m4-core" }
+sha2 = "=0.11.1"
+
+[lints]
+workspace = true
