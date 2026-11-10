@@ -25,7 +25,7 @@ jobs:
       - name: Install tools
         uses: jdx/mise-action@b44d12e7d0d8ee7461bb893e1b1993500433185b
         with:
-          version: 2026.10.24
+          version: 2026.11.5
       - name: Install native audio dependencies
         run: |
           sudo apt-get update
