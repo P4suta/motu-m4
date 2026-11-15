@@ -12,7 +12,7 @@ motu-m4 = { path = "../crates/motu-m4" }
 clap = { version = "=4.6.7", features = ["derive"] }
 motu-m4-core = { path = "../crates/motu-m4-core" }
 sha2 = "=0.11.1"
-zip = { version = "=9.5.0", default-features = false, features = [
+zip = { version = "=9.5.1", default-features = false, features = [
   "deflate-flate2-zlib-rs",
 ] }
 
