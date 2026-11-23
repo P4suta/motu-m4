@@ -31,6 +31,7 @@ impl Scratch {
             "config/pipewire/pipewire.conf.d",
             "config/wireplumber/main.lua.d",
             "config/wireplumber/policy.lua.d",
+            "config/wireplumber/wireplumber.conf.d",
             "asound/card1",
             "sound/card1/device",
             "state",
@@ -82,6 +83,27 @@ impl Drop for Daemon {
             .status();
         let _ = self.0.wait();
     }
+}
+
+fn session_manager(root: &Path) -> Vec<Daemon> {
+    if Path::new("/usr/share/wireplumber/main.conf").is_file() {
+        return [("main.conf", "main.log"), ("policy.conf", "policy.log")]
+            .map(|(config, log)| {
+                Daemon::spawn(
+                    root,
+                    "dbus-run-session",
+                    &["--", "wireplumber", "-c", config],
+                    log,
+                )
+            })
+            .into();
+    }
+    vec![Daemon::spawn(
+        root,
+        "dbus-run-session",
+        &["--", "wireplumber"],
+        "main.log",
+    )]
 }
 
 fn ready<T>(root: &Path, stage: &str, mut operation: impl FnMut() -> Option<T>) -> T {
@@ -211,22 +233,21 @@ fn generated_routes_load_link_and_accept_real_session_manager_controls() {
     )
     .unwrap();
     fs::write(root.join("config/wireplumber/main.lua.d/89-disable-monitors.lua"), "alsa_monitor.enabled = false\nv4l2_monitor.enabled = false\nlibcamera_monitor.enabled = false\n").unwrap();
+    let profile = json!({"wireplumber.profiles": {"main": {
+        "hardware.audio": "disabled",
+        "hardware.bluetooth": "disabled",
+        "hardware.video-capture": "disabled"
+    }}});
+    fs::write(
+        root.join("config/wireplumber/wireplumber.conf.d/89-disable-monitors.conf"),
+        serde_json::to_vec_pretty(&profile).unwrap(),
+    )
+    .unwrap();
     let _pipewire = Daemon::spawn(root, "pipewire", &[], "pipewire.log");
     ready(root, "native socket", || {
         root.join("runtime/pipewire-0").exists().then_some(())
     });
-    let _main = Daemon::spawn(
-        root,
-        "dbus-run-session",
-        &["--", "wireplumber", "-c", "main.conf"],
-        "main.log",
-    );
-    let _policy = Daemon::spawn(
-        root,
-        "dbus-run-session",
-        &["--", "wireplumber", "-c", "policy.conf"],
-        "policy.log",
-    );
+    let sessions = session_manager(root);
     let mut host = SystemDesktop::in_runtime(&root.join("runtime"));
     let actual = ready(root, "channel links", || {
         let bytes = host.execute(DesktopAction::Dump).ok()?;
@@ -445,25 +466,13 @@ fn generated_routes_load_link_and_accept_real_session_manager_controls() {
         .then_some(())
     });
     drop(_pulse);
-    drop(_policy);
-    drop(_main);
+    drop(sessions);
     drop(_pipewire);
     let _pipewire = Daemon::spawn(root, "pipewire", &[], "pipewire.log");
     ready(root, "restarted socket", || {
         root.join("runtime/pipewire-0").exists().then_some(())
     });
-    let _main = Daemon::spawn(
-        root,
-        "dbus-run-session",
-        &["--", "wireplumber", "-c", "main.conf"],
-        "main.log",
-    );
-    let _policy = Daemon::spawn(
-        root,
-        "dbus-run-session",
-        &["--", "wireplumber", "-c", "policy.conf"],
-        "policy.log",
-    );
+    let _sessions = session_manager(root);
     ready(root, "restarted routes", || {
         let bytes = host.execute(DesktopAction::Dump).ok()?;
         let objects: Vec<Value> = serde_json::from_slice(&bytes).ok()?;
